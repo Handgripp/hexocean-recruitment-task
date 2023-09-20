@@ -1,41 +1,14 @@
 import pathlib
 import shutil
-from django.contrib.auth.hashers import check_password
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
-from .repositories import UserRepository, ImageRepository
+from ..repositories.user_repository import UserRepository
+from ..repositories.image_repository import ImageRepository
 from PIL import Image
 from decouple import config
 from django.http import FileResponse
-from .validate_token import validate_jwt_token
-
-@api_view(['POST'])
-def login(request):
-    email = request.data.get("email")
-    password = request.data.get("password")
-
-    if not email or not password:
-        return Response({"error": "Email and password are required."}, status=status.HTTP_400_BAD_REQUEST)
-
-    user = UserRepository.get_user_by_email(email)
-
-    if not user:
-        return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
-
-    if not check_password(password, user.password):
-        return Response({"error": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
-
-    refresh = RefreshToken.for_user(user)
-
-    return Response(
-        {
-            "access": str(refresh.access_token),
-            "refresh": str(refresh),
-        },
-        status=status.HTTP_200_OK,
-    )
+from ..validate_token import validate_jwt_token
 
 
 @api_view(['POST'])
@@ -49,15 +22,19 @@ def upload_image(request):
 
     user_id = decoded_token["user_id"]
     image = request.FILES['image']
-    image_path = image.name
+    uploaded_image = image.name
     user = UserRepository.get_user_by_id(user_id)
     if not user:
         return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
-    file_format = pathlib.Path(image_path).suffix
+    file_format = pathlib.Path(uploaded_image).suffix
+
+    if file_format not in [".png", ".jpg"]:
+        return Response({"error": "Incorrect file format"}, status=status.HTTP_400_BAD_REQUEST)
+
     file_format_without_dot = file_format.replace(".", "")
-    image_path = image_path.replace(" ", "_")
-    image_path = 'media/' + image_path
+    image_path_deleted_spaces = uploaded_image.replace(" ", "_")
+    image_path = 'media/' + image_path_deleted_spaces
     image_from_db = ImageRepository.get_image_by_name(image_path)
 
     if image_from_db:
@@ -91,7 +68,7 @@ def show_image(request, image_id):
     image = ImageRepository.get_image_by_id(image_id)
     if not image:
         return Response({"error": "Image not found."}, status=status.HTTP_404_NOT_FOUND)
-    
+
     image_path = image.path
     image_path = str(image_path)
     img_file = open(image_path, 'rb')
