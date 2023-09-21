@@ -11,9 +11,10 @@ services:
       - "5432:5432"
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python /app/recurimentTask/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
+      - /app/media
     ports:
       - "8000:8000"
     depends_on:

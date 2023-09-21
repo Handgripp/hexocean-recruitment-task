@@ -1,7 +1,6 @@
 import pathlib
 import shutil
 from datetime import datetime
-
 import jwt
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -12,6 +11,8 @@ from PIL import Image
 from decouple import config
 from django.http import FileResponse
 from ..validate_token import validate_jwt_token
+
+ALLOWED_PLANS_TO_CREATE_EXPIRES_LINKS = ["Enterprise"]
 
 
 class ImageProcessor:
@@ -153,7 +154,7 @@ def create_image_link_for_enterprise(request, image_id):
     if not user:
         return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
-    if user.plan not in "Enterprise":
+    if user.plan not in ALLOWED_PLANS_TO_CREATE_EXPIRES_LINKS:
         return Response({"error": "You haven't enterprise plan"}, status=status.HTTP_401_UNAUTHORIZED)
 
     image = ImageRepository.get_image_by_id(image_id)
@@ -167,7 +168,7 @@ def create_image_link_for_enterprise(request, image_id):
 
     image_link = f"{api_base_url}images/{image.id}?expires_token={token}"
 
-    return Response({"Image link": image_link}, status=status.HTTP_201_CREATED)
+    return Response({"image_link": image_link}, status=status.HTTP_201_CREATED)
 
 
 

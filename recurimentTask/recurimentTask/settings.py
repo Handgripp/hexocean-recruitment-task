@@ -85,11 +85,11 @@ DATABASES = {
         "NAME": "db",
         "USER": "admin",
         "PASSWORD": config('PASSWORD'),
-        "HOST": "localhost",
+        "HOST": "hexocean-recuriment-task-db-1",
         "PORT": "5432",
     }
 }
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/app/media/'
 MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
