@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/hexocean-recuriment-task.iml" filepath="$PROJECT_DIR$/.idea/hexocean-recuriment-task.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../hexocean-recruitment-task/.idea/hexocean-recruitment-task.iml" filepath="$PROJECT_DIR$/../hexocean-recruitment-task/.idea/hexocean-recruitment-task.iml" />
     </modules>
   </component>
 </project>

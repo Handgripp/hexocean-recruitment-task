@@ -11,7 +11,7 @@ services:
       - "5432:5432"
   web:
     build: .
-    command: python /app/recurimentTask/manage.py runserver 0.0.0.0:8000
+    command: python /app/recruitment_task/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
       - /app/media
