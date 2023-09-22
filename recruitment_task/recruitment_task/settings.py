@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'recruitment_task.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": config('NAME'),
-        "USER": config('USER'),
-        "PASSWORD": config('PASSWORD'),
-        "HOST": config('HOST'),
-        "PORT": config('PORT'),
+        "NAME": config('DATABASE_NAME'),
+        "USER": config('DATABASE_USER'),
+        "PASSWORD": config('DATABASE_PASSWORD'),
+        "HOST": config('DATABASE_HOST'),
+        "PORT": config('DATABASE_PORT'),
     }
 }
 MEDIA_ROOT = '/app/media/'

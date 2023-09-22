@@ -7,11 +7,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('login', login, name='login'),
-    path('images/upload', upload_image),
+    path('images/upload', upload_image, name='images/upload'),
     path('images', get_links),
-    path('images/<str:image_id>', show_image),
+    path('images/<str:image_id>', show_image, name='images/image_id'),
     path('images-admin/<str:image_id>', show_image_admin),
-    path('images/<str:image_id>/generate-link', create_image_link_for_enterprise)
+    path('images/<str:image_id>/generate-link', create_image_link_for_enterprise, name='images/image_id/generate-link')
 ]
 
 if settings.DEBUG:
