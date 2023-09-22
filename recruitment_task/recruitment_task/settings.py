@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'recruitment_task.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "db",
-        "USER": "admin",
+        "NAME": config('NAME'),
+        "USER": config('USER'),
         "PASSWORD": config('PASSWORD'),
-        "HOST": "hexocean-recruitment-task-db-1",
-        "PORT": "5432",
+        "HOST": config('HOST'),
+        "PORT": config('PORT'),
     }
 }
 MEDIA_ROOT = '/app/media/'
